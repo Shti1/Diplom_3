@@ -11,7 +11,6 @@ from pages.profile_page import ProfilePage
 
 @allure.feature("Лента заказов")
 @allure.story("Проверка работы счетчиков в ленте заказов")
-@pytest.mark.usefixtures("driver")
 class TestFeedPage:
     @allure.title("Проверка открытия деталей заказа в Ленте заказов")
     def test_open_order_details_in_feed(self, driver):
@@ -32,7 +31,7 @@ class TestFeedPage:
             assert feed_page.is_composition_text_visible(), "Текст 'Состав' не найден в всплывающем окне"
 
     @allure.title("Проверка отображения заказов пользователя из раздела 'История заказов' в Ленте заказов")
-    def test_user_orders_in_feed(self, driver):
+    def test_user_orders_in_feed(self, driver, registered_user):
         main_page = MainPage(driver)
         login_page = LoginPage(driver)
         order_page = OrderPage(driver)
@@ -42,8 +41,8 @@ class TestFeedPage:
         # 1. Авторизация
         with allure.step("1. Авторизоваться на сайте"):
             main_page.click_login_button()
-            login_page.enter_email(TestData.TEST_EMAIL)
-            login_page.enter_password(TestData.TEST_PASSWORD)
+            login_page.enter_email(registered_user['email'])
+            login_page.enter_password(registered_user['password'])
             login_page.click_login_button()
             assert main_page.should_be_main_page()
 
@@ -78,7 +77,7 @@ class TestFeedPage:
             assert feed_page.is_composition_text_visible(), "Не найден текст 'Состав' в деталях заказа"
 
     @allure.title("Проверка увеличения счетчика 'Выполнено за все время' при создании нового заказа")
-    def test_order_counter_increases_after_new_order(self, driver):
+    def test_order_counter_increases_after_new_order(self, driver, registered_user):
         main_page = MainPage(driver)
         login_page = LoginPage(driver)
         feed_page = FeedPage(driver)
@@ -87,8 +86,8 @@ class TestFeedPage:
         # 1. Авторизация
         with allure.step("1. Авторизоваться на сайте"):
             main_page.click_login_button()
-            login_page.enter_email(TestData.TEST_EMAIL)
-            login_page.enter_password(TestData.TEST_PASSWORD)
+            login_page.enter_email(registered_user['email'])
+            login_page.enter_password(registered_user['password'])
             login_page.click_login_button()
             assert main_page.should_be_main_page()
 
@@ -122,7 +121,7 @@ class TestFeedPage:
             )
 
     @allure.title("Проверка увеличения счетчика 'Выполнено за сегодня' при создании нового заказа")
-    def test_today_counter_increases_after_new_order(self, driver):
+    def test_today_counter_increases_after_new_order(self, driver, registered_user):
         main_page = MainPage(driver)
         login_page = LoginPage(driver)
         feed_page = FeedPage(driver)
@@ -131,8 +130,8 @@ class TestFeedPage:
         # 1. Авторизация
         with allure.step("1. Авторизоваться на сайте"):
             main_page.click_login_button()
-            login_page.enter_email(TestData.TEST_EMAIL)
-            login_page.enter_password(TestData.TEST_PASSWORD)
+            login_page.enter_email(registered_user['email'])
+            login_page.enter_password(registered_user['password'])
             login_page.click_login_button()
             assert main_page.should_be_main_page()
 
@@ -167,7 +166,7 @@ class TestFeedPage:
             )
 
     @allure.title("Проверка появления номера заказа в разделе 'В работе' после оформления")
-    def test_order_appears_in_progress_section(self, driver):
+    def test_order_appears_in_progress_section(self, driver, registered_user):
         main_page = MainPage(driver)
         login_page = LoginPage(driver)
         feed_page = FeedPage(driver)
@@ -176,8 +175,8 @@ class TestFeedPage:
         # 1. Авторизация
         with allure.step("1. Авторизоваться на сайте"):
             main_page.click_login_button()
-            login_page.enter_email(TestData.TEST_EMAIL)
-            login_page.enter_password(TestData.TEST_PASSWORD)
+            login_page.enter_email(registered_user['email'])
+            login_page.enter_password(registered_user['password'])
             login_page.click_login_button()
             assert main_page.should_be_main_page()
 

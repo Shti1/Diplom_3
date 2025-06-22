@@ -10,7 +10,6 @@ from pages.reset_password_page import ResetPasswordPage
 
 @allure.feature("Восстановление пароля")
 @allure.story("Проверка функционала восстановления пароля")
-@pytest.mark.usefixtures("driver")
 class TestPasswordRecovery:
     @allure.title("Проверка перехода на страницу восстановления пароля по кнопке «Восстановить пароль»")
     def test_navigate_to_password_recovery(self, driver):

@@ -12,7 +12,6 @@ from pages.order_page import OrderPage
 
 @allure.feature("Основной функционал")
 @allure.story("Проверка работы Конструктора")
-@pytest.mark.usefixtures("driver")
 class TestMainFunctionality:
     @allure.title("Переход по клику на Конструктор")
     def test_navigate_to_constructor(self, driver):
@@ -74,7 +73,7 @@ class TestMainFunctionality:
             assert main_page.get_ingredient_counter_value(7) == "1", "Счетчик мяса должен стать 1"
 
     @allure.title("Проверка оформления заказа авторизованным пользователем")
-    def test_authenticated_user_can_create_order(self, driver):
+    def test_authenticated_user_can_create_order(self, driver, registered_user):
         main_page = MainPage(driver)
         login_page = LoginPage(driver)
         order_page = OrderPage(driver)
@@ -82,8 +81,8 @@ class TestMainFunctionality:
         with allure.step("1. Авторизоваться на сайте"):
             main_page.wait_for_page_loaded()
             main_page.click_login_button()
-            login_page.enter_email(TestData.TEST_EMAIL)
-            login_page.enter_password(TestData.TEST_PASSWORD)
+            login_page.enter_email(registered_user['email'])
+            login_page.enter_password(registered_user['password'])
             login_page.click_login_button()
             assert main_page.should_be_main_page(), "Не удалось авторизоваться"
 
