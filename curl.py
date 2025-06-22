@@ -1,0 +1,1 @@
+MAIN_SITE = 'https://stellarburgers.nomoreparties.site'
