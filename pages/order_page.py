@@ -59,7 +59,6 @@ class OrderPage(BasePage):
             allure.attach("Модальное окно закрыто обычным кликом", name="Modal Close Method")
         except ElementClickInterceptedException:
             # Если не получилось - пробуем через JS
-            close_button = self.wait_for_element(OrderLocators.MODAL_CLOSE_BUTTON)
-            self.driver.execute_script("arguments[0].click();", close_button)
+            self.click_via_js(OrderLocators.MODAL_CLOSE_BUTTON)
             self.wait_for_element_hide(OrderLocators.ORDER_MODAL)
             allure.attach("Модальное окно закрыто через JavaScript", name="Modal Close Method")

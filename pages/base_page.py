@@ -83,3 +83,9 @@ class BasePage:
             lambda _: condition(),
             message=message
         )
+
+    @allure.step("Кликнуть на элемент через JavaScript")
+    def click_via_js(self, locator):
+        """Клик по элементу через JavaScript"""
+        element = self.wait_for_element(locator)
+        self.driver.execute_script("arguments[0].click();", element)

@@ -70,7 +70,6 @@ class TestPersonalAccount:
             login_page = LoginPage(driver)
             profile_page = ProfilePage(driver)
 
-            driver.get(MAIN_SITE)
             main_page.wait_for_page_loaded()
             main_page.click_login_button()
 
