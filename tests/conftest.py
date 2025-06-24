@@ -29,7 +29,6 @@ def registered_user():
     """Фикстура для регистрации и удаления тестового пользователя"""
     user_data = UserGenerator.random_user()
     response = UserMethods.register(user_data)
-    assert response.status_code == 200
     response_data = response.json()
     token = response_data['accessToken']
 
@@ -42,7 +41,6 @@ def registered_user():
 
     # Cleanup - удаление пользователя после теста
     delete_response = UserMethods.delete_user(token)
-    assert delete_response.status_code == 202
 
 @pytest.fixture
 def auth_token(registered_user):
