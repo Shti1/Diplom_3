@@ -6,6 +6,7 @@ from pages.login_page import LoginPage
 from pages.main_page import MainPage
 from pages.order_page import OrderPage
 from pages.profile_page import ProfilePage
+from data import TestData
 
 
 @allure.feature("Лента заказов")
@@ -27,7 +28,7 @@ class TestFeedPage:
             assert feed_page.is_order_details_modal_visible(), "Всплывающее окно не отобразилось"
 
         with allure.step("4. Проверить, что всплывающее окно содержит текст 'Состав'"):
-            assert feed_page.is_composition_text_visible(), "Текст 'Состав' не найден в всплывающем окне"
+            assert feed_page.is_composition_text_visible(), f"Текст '{TestData.TEXT['COMPOSITION']}' не найден в всплывающем окне"
 
     @allure.title("Проверка отображения заказов пользователя из раздела 'История заказов' в Ленте заказов")
     def test_user_orders_in_feed(self, driver, registered_user):
@@ -47,8 +48,8 @@ class TestFeedPage:
 
         # 2. Создание заказа
         with allure.step("2. Создать тестовый заказ"):
-            main_page.drag_ingredient_to_order("Флюоресцентная булка R2-D3")
-            main_page.drag_ingredient_to_order("Соус Spicy-X")
+            main_page.drag_ingredient_to_order(TestData.INGREDIENTS["R2_D3_BUN"])
+            main_page.drag_ingredient_to_order(TestData.INGREDIENTS["SPICY_X_SAUCE"])
             main_page.click_place_order_button()
 
             # Получаем валидный номер заказа
@@ -73,7 +74,7 @@ class TestFeedPage:
 
             feed_page.click_top_order()
             assert feed_page.is_order_details_modal_visible(), "Не открылось окно деталей заказа"
-            assert feed_page.is_composition_text_visible(), "Не найден текст 'Состав' в деталях заказа"
+            assert feed_page.is_composition_text_visible(), f"Не найден текст '{TestData.TEXT['COMPOSITION']}' в деталях заказа"
 
     @allure.title("Проверка увеличения счетчика 'Выполнено за все время' при создании нового заказа")
     def test_order_counter_increases_after_new_order(self, driver, registered_user):
@@ -99,8 +100,8 @@ class TestFeedPage:
         # 3. Создаем новый заказ
         with allure.step("3. Создать тестовый заказ"):
             main_page.click_constructor_button()  # Возвращаемся в конструктор
-            main_page.drag_ingredient_to_order("Флюоресцентная булка R2-D3")
-            main_page.drag_ingredient_to_order("Соус Spicy-X")
+            main_page.drag_ingredient_to_order(TestData.INGREDIENTS["R2_D3_BUN"])
+            main_page.drag_ingredient_to_order(TestData.INGREDIENTS["SPICY_X_SAUCE"])
             main_page.click_place_order_button()
 
             # Получаем номер заказа и закрываем модальное окно
@@ -144,8 +145,8 @@ class TestFeedPage:
         # 3. Создаем новый заказ
         with allure.step("3. Создать тестовый заказ"):
             main_page.click_constructor_button()
-            main_page.drag_ingredient_to_order("Флюоресцентная булка R2-D3")
-            main_page.drag_ingredient_to_order("Соус Spicy-X")
+            main_page.drag_ingredient_to_order(TestData.INGREDIENTS["R2_D3_BUN"])
+            main_page.drag_ingredient_to_order(TestData.INGREDIENTS["SPICY_X_SAUCE"])
             main_page.click_place_order_button()
 
             order_number = order_page.get_valid_order_number()
@@ -182,8 +183,8 @@ class TestFeedPage:
         # 2. Создаем новый заказ
         with allure.step("2. Создать тестовый заказ"):
             main_page.click_constructor_button()
-            main_page.drag_ingredient_to_order("Флюоресцентная булка R2-D3")
-            main_page.drag_ingredient_to_order("Соус Spicy-X")
+            main_page.drag_ingredient_to_order(TestData.INGREDIENTS["R2_D3_BUN"])
+            main_page.drag_ingredient_to_order(TestData.INGREDIENTS["SPICY_X_SAUCE"])
             main_page.click_place_order_button()
 
             # Получаем номер заказа
