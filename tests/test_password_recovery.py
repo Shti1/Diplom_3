@@ -27,7 +27,7 @@ class TestPasswordRecovery:
 
         with allure.step("4. Проверить переход на страницу восстановления пароля"):
             forgot_page = ForgotPasswordPage(driver)
-            assert forgot_page.should_be_forgot_password_page
+            assert forgot_page.should_be_forgot_password_page()
 
 
     @allure.title("Восстановление пароля по email")
@@ -47,7 +47,7 @@ class TestPasswordRecovery:
 
         with allure.step("3. Ожидать загрузки страницы сброса пароля"):
             reset_page = ResetPasswordPage(driver)
-            assert reset_page.should_be_reset_password_page
+            assert reset_page.should_be_reset_password_page()
 
     @allure.title("Проверка подсвечивания поля пароля по кнопке показать/скрыть пароль")
     def test_password_visibility_toggle(self, driver, random_email):
@@ -65,7 +65,7 @@ class TestPasswordRecovery:
 
         with allure.step("2. Проверка загрузки страницы сброса пароля"):
             reset_page = ResetPasswordPage(driver)
-            assert reset_page.should_be_reset_password_page
+            assert reset_page.should_be_reset_password_page()
 
         with allure.step("3. Проверка подсвечивания поля пароля"):
 
