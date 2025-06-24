@@ -1,5 +1,7 @@
 import allure
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.common.exceptions import ElementClickInterceptedException
+from selenium.webdriver.common.action_chains import ActionChains
 
 from locators.order_locators import OrderLocators
 from pages.base_page import BasePage
@@ -48,3 +50,23 @@ class OrderPage(BasePage):
         close_button = self.wait_for_element_to_be_clickable(OrderLocators.MODAL_CLOSE_BUTTON)
         close_button.click()
         self.wait_for_element_hide(OrderLocators.ORDER_MODAL)
+
+    @allure.step("Безопасное закрытие модального окна заказа")
+    def safe_close_modal(self):
+        """Закрывает модальное окно с защитой от перекрытия элементов"""
+        try:
+            # Пробуем стандартный способ
+            self.close_order_modal()
+            allure.attach("Модальное окно закрыто обычным кликом", name="Modal Close Method")
+        except ElementClickInterceptedException:
+            # Если не получилось - пробуем через JS
+            close_button = self.wait_for_element(OrderLocators.MODAL_CLOSE_BUTTON)
+            self.driver.execute_script("arguments[0].click();", close_button)
+            self.wait_for_element_hide(OrderLocators.ORDER_MODAL)
+            allure.attach("Модальное окно закрыто через JavaScript", name="Modal Close Method")
+        except Exception as e:
+            # Если и это не сработало - пробуем ActionChains
+            close_button = self.wait_for_element(OrderLocators.MODAL_CLOSE_BUTTON)
+            ActionChains(self.driver).move_to_element(close_button).click().perform()
+            self.wait_for_element_hide(OrderLocators.ORDER_MODAL)
+            allure.attach("Модальное окно закрыто через ActionChains", name="Modal Close Method")

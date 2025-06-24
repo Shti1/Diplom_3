@@ -69,3 +69,17 @@ class BasePage:
             EC.element_to_be_clickable(locator),
             message=f"Элемент с локатором {locator} не стал кликабельным за {timeout} секунд"
         )
+
+    @allure.step("Найти элементы по локатору")
+    def find_elements(self, locator, timeout=TestData.GLOBAL_TIMEOUT):
+        """Возвращает список элементов по локатору"""
+        self.wait_for_element(locator, timeout)
+        return self.driver.find_elements(*locator)
+
+    @allure.step("Кастомное ожидание условия")
+    def custom_wait_until(self, condition, timeout=10, message=""):
+        """Ожидает выполнения кастомного условия"""
+        return WebDriverWait(self.driver, timeout).until(
+            lambda _: condition(),
+            message=message
+        )

@@ -1,6 +1,5 @@
 import allure
 from selenium.common import TimeoutException
-from selenium.webdriver.support.wait import WebDriverWait
 
 from pages.base_page import BasePage
 from locators.feed_locators import FeedLocators
@@ -57,21 +56,17 @@ class FeedPage(BasePage):
     def wait_for_counter_increase(self, initial_value, timeout=10):
         """Ожидает увеличения счетчика относительно начального значения"""
 
-        def counter_increased(driver):
+        def counter_increased():
             current_value = self.get_all_time_completed_orders_count()
             return current_value > initial_value
 
         try:
-            WebDriverWait(self.driver, timeout).until(
-                counter_increased,
-                message=f"Счетчик не увеличился за {timeout} секунд. "
-                        f"Начальное значение: {initial_value}, текущее: {self.get_all_time_completed_orders_count()}"
-            )
+            self.custom_wait_until(counter_increased, timeout=timeout,
+                                 message=f"Счетчик не увеличился за {timeout} секунд. "
+                                        f"Начальное значение: {initial_value}, текущее: {self.get_all_time_completed_orders_count()}")
             return True
         except TimeoutException:
             return False
-
-
 
     @allure.step("Получить количество выполненных заказов за сегодня")
     def get_today_completed_orders_count(self):
@@ -83,7 +78,7 @@ class FeedPage(BasePage):
     def get_orders_in_progress_numbers(self):
         """Возвращает список номеров заказов в разделе 'В работе'"""
         try:
-            elements = self.driver.find_elements(*FeedLocators.ORDER_IN_PROGRESS_NUMBER)
+            elements = self.find_elements(FeedLocators.ORDER_IN_PROGRESS_NUMBER)
             return [element.text for element in elements if element.text]
         except Exception as e:
             allure.attach(f"Ошибка при получении заказов в работе: {str(e)}", name="Error")
@@ -96,14 +91,12 @@ class FeedPage(BasePage):
         :param timeout: время ожидания
         """
 
-        def order_is_present(driver):
+        def order_is_present():
             try:
                 current_orders = self.get_orders_in_progress_numbers()
                 return order_number in current_orders
             except Exception:
                 return False
 
-        WebDriverWait(self.driver, timeout).until(
-            order_is_present,
-            message=f"Заказ #{order_number} не появился в разделе 'В работе' за {timeout} сек"
-        )
+        self.custom_wait_until(order_is_present, timeout=timeout,
+                             message=f"Заказ #{order_number} не появился в разделе 'В работе' за {timeout} сек")

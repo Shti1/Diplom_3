@@ -1,7 +1,6 @@
 import allure
 import pytest
 
-from data import TestData
 from pages.feed_page import FeedPage
 from pages.login_page import LoginPage
 from pages.main_page import MainPage
@@ -57,7 +56,7 @@ class TestFeedPage:
             allure.attach(f"Номер заказа: {order_number}", name="Order Number")
 
             # Закрываем всплывающее окно
-            order_page.close_order_modal()
+            order_page.safe_close_modal()
 
         # 3. Проверка в Истории заказов
         with allure.step("3. Проверить наличие заказа в Истории заказов"):
@@ -107,7 +106,7 @@ class TestFeedPage:
             # Получаем номер заказа и закрываем модальное окно
             order_number = order_page.get_valid_order_number()
             allure.attach(f"Номер созданного заказа: {order_number}", name="Order Number")
-            order_page.close_order_modal()
+            order_page.safe_close_modal()
 
         # 4. Проверяем увеличение счетчика
         with allure.step("4. Проверить увеличение счетчика выполненных заказов"):
@@ -151,7 +150,7 @@ class TestFeedPage:
 
             order_number = order_page.get_valid_order_number()
             allure.attach(f"Номер созданного заказа: {order_number}", name="Order Number")
-            order_page.close_order_modal()
+            order_page.safe_close_modal()
 
         # 4. Проверяем увеличение счетчика за сегодня
         with allure.step("4. Проверить увеличение счетчика 'Выполнено за сегодня'"):
@@ -190,7 +189,7 @@ class TestFeedPage:
             # Получаем номер заказа
             order_number = order_page.get_valid_order_number()
             allure.attach(f"Номер созданного заказа: {order_number}", name="Order Number")
-            order_page.close_order_modal()
+            order_page.safe_close_modal()
 
         # 3. Проверяем появление заказа в разделе "В работе"
         with allure.step("3. Проверить появление заказа в разделе 'В работе'"):
