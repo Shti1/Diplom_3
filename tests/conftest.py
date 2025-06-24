@@ -3,7 +3,7 @@ import requests
 from selenium import webdriver
 
 from curl import *
-from data import UserMethods
+from user_methods import UserMethods
 from generators import generate_email, UserGenerator
 
 
