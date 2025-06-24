@@ -1,5 +1,4 @@
 import allure
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import ElementClickInterceptedException
 
 from locators.order_locators import OrderLocators
@@ -38,8 +37,9 @@ class OrderPage(BasePage):
         def is_valid_order_number(number):
             return number.isdigit() and number != "9999"
 
-        return WebDriverWait(self.driver, timeout).until(
-            lambda d: self.get_order_number() if is_valid_order_number(self.get_order_number()) else False,
+        return self.custom_wait_until(
+            lambda: self.get_order_number() if is_valid_order_number(self.get_order_number()) else False,
+            timeout=timeout,
             message="Не удалось получить корректный номер заказа"
         )
 
